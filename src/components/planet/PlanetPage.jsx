@@ -30,6 +30,14 @@ class PlanetPage extends React.Component {
         this.props.history.push("/travel");
     };
 
+    handleBuyClicked = () => {
+        this.props.history.push("/buy");
+    };
+
+    handleSellClicked = () => {
+        this.props.history.push("/sell");
+    };
+
     render() {
         const planet = this.props.planets.toJS()[this.props.player.planetIndex];
         if (planet) {
@@ -52,10 +60,18 @@ class PlanetPage extends React.Component {
                         >
                             Travel
                         </Button>
-                        <Button variant="contained" color="primary">
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={this.handleBuyClicked}
+                        >
                             Buy
                         </Button>
-                        <Button variant="contained" color="secondary">
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={this.handleSellClicked}
+                        >
                             Sell
                         </Button>
                     </ButtonContainer>

@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 
 class PlayerStore {
     @observable
@@ -12,7 +12,8 @@ class PlayerStore {
         credits: 1000,
         fuel: 500,
         fuelCapacity: 500,
-        cargoHold: []
+        cargoHold: [],
+        cargoCapacity: 20
     };
 
     @action.bound
@@ -26,6 +27,14 @@ class PlayerStore {
         this.state.engineerPoints = engineerPoints;
         this.state.pilotPoints = pilotPoints;
         this.state.traderPoints = traderPoints;
+    }
+
+    @computed get cargoSpace() {
+        let space = 0;
+        for (let cargo of this.state.cargoHold) {
+            space += cargo.quantity;
+        }
+        return space;
     }
 }
 

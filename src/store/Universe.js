@@ -29,32 +29,37 @@ class Universe {
             const coordsY = Math.floor(Math.random() * Y_BOUND);
             const resources =
                 RESOURCES[Math.floor(Math.random() * RESOURCES.length)];
-            const techLevel =
-                TECH_LEVELS[Math.floor(Math.random() * TECH_LEVELS.length)];
+            const techLevelIdx = Math.floor(Math.random() * TECH_LEVELS.length);
+            const techLevel = TECH_LEVELS[techLevelIdx];
+
             const tradeGoods = [];
             for (let goodKey in TRADE_GOODS) {
                 const good = TRADE_GOODS[goodKey];
-                if (good.MLTP <= techLevel || good.MLTU <= techLevel) {
+                if (good.MLTP <= techLevelIdx || good.MLTU <= techLevelIdx) {
                     const random = Math.random();
                     const addVariance = random < 0.5;
                     let price = good.basePrice;
 
-                    if (good.MLTP > techLevel) {
-                        price += good.IPL * (techLevel - good.MLTU);
-                    } else {
-                        price += good.IPL * (techLevel - good.MTLP);
-                    }
+                    // if (good.MLTP > techLevelIdx) {
+
+                    //     price += good.IPL * (techLevelIdx - good.MLTU);
+                    // } else {
+
+                    //     price += good.IPL * (techLevelIdx - good.MTLP);
+                    // }
+
                     if (addVariance) {
                         const varianceFactor = Math.random() * (good.var + 1);
                         price += Math.floor(price * varianceFactor);
                     }
+
                     let quantity =
-                        Math.floor(Math.random * 70) -
-                        4 * Math.abs(good.TTP - techLevel);
+                        Math.floor(Math.random() * 70) -
+                        4 * Math.abs(good.TTP - techLevelIdx);
                     while (quantity <= 1) {
                         quantity =
-                            Math.floor(Math.random * 70) -
-                            5 * Math.abs(good.TTP - techLevel);
+                            Math.floor(Math.random() * 70) -
+                            5 * Math.abs(good.TTP - techLevelIdx);
                     }
 
                     if (resources === good.CR) {
@@ -75,10 +80,10 @@ class Universe {
                 coordsX,
                 coordsY,
                 resources,
-                techLevel
+                techLevel,
+                tradeGoods
             });
         }
-        console.log(this.planets[0].name);
     }
 }
 
