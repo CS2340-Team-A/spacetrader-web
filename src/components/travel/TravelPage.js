@@ -58,6 +58,10 @@ class TravelPage extends React.Component {
         this.props.history.push("/planet");
     };
 
+    handleBackClick = () => {
+        this.props.history.push("/planet");
+    };
+
     handleSelect = e => {
         this.setState({
             selected: e.target.value
@@ -87,8 +91,6 @@ class TravelPage extends React.Component {
     render() {
         const { selected, reachablePlanets } = this.state;
         const { player } = this.props;
-
-        console.log(player.fuel);
 
         const selectedPlanet = reachablePlanets[selected];
 
@@ -148,6 +150,14 @@ class TravelPage extends React.Component {
                             onClick={this.handleClick}
                         >
                             Travel
+                        </Button>
+                        <Button
+                            style={{ margin: "20px 20px" }}
+                            variant="contained"
+                            color="secondary"
+                            onClick={this.handleBackClick}
+                        >
+                            Back
                         </Button>
                     </>
                 )}
