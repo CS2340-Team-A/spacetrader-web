@@ -6,7 +6,9 @@ import {
     InputLabel,
     MenuItem,
     Select,
-    Button
+    Button,
+    Snackbar,
+    SnackbarContent
 } from "@material-ui/core";
 import styled from "styled-components";
 
@@ -23,6 +25,8 @@ const Form = styled.form`
 
 class ConfigPage extends React.Component {
     state = {
+        open: false,
+        reason: "",
         name: "",
         fighterPoints: 0,
         traderPoints: 0,
@@ -37,9 +41,61 @@ class ConfigPage extends React.Component {
         });
     };
 
+    handleStart = () => {
+        const {
+            name,
+            fighterPoints,
+            traderPoints,
+            pilotPoints,
+            engineerPoints
+        } = this.state;
+        const fPoints = parseInt(fighterPoints, 10);
+        const tPoints = parseInt(traderPoints, 10);
+        const pPoints = parseInt(pilotPoints, 10);
+        const ePoints = parseInt(engineerPoints, 10);
+
+        if (!name) {
+            this.setState({
+                reason: "Please enter a valid name!",
+                open: true
+            });
+        } else if (fPoints < 0 || tPoints < 0 || pPoints < 0 || ePoints < 0) {
+            this.setState({
+                reason: "Points cannot be negative!",
+                open: true
+            });
+        } else if (fPoints + tPoints + pPoints + ePoints !== 16) {
+            this.setState({
+                reason: "Points must add up to 16!",
+                open: true
+            });
+        } else {
+            this.props.history.push("/game");
+        }
+    };
+
+    handleSnackClose = () => {
+        this.setState({
+            open: false,
+            reason: ""
+        });
+    };
+
     render() {
         return (
             <Layout>
+                <Snackbar
+                    open={this.state.open}
+                    variant="error"
+                    anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                    autoHideDuration={2000}
+                    onClose={this.handleSnackClose}
+                >
+                    <SnackbarContent
+                        style={{ backgroundColor: "#d32f2f" }}
+                        message={<span>{this.state.reason}</span>}
+                    />
+                </Snackbar>
                 <Form noValidate={true} autoComplete="off">
                     <TextField
                         id="name"
@@ -111,6 +167,7 @@ class ConfigPage extends React.Component {
                         style={{ margin: "25px 0" }}
                         variant="contained"
                         color="primary"
+                        onClick={this.handleStart}
                     >
                         Start Game
                     </Button>
