@@ -10,7 +10,7 @@ const Container = styled(Paper)`
     margin: 0 auto;
     width: 600px;
     margin-top: 50px;
-    padding: 10px 20px;
+    padding: 20px 30px;
 `;
 const ButtonContainer = styled.div`
     display: flex;
@@ -25,6 +25,10 @@ class PlanetPage extends React.Component {
     componentDidMount() {
         Universe.initialize();
     }
+
+    handleTravelClicked = () => {
+        this.props.history.push("/travel");
+    };
 
     render() {
         const planet = this.props.planets.toJS()[this.props.player.planetIndex];
@@ -41,7 +45,11 @@ class PlanetPage extends React.Component {
                         level of {TECH_LEVELS.indexOf(planet.techLevel)}
                     </Typography>
                     <ButtonContainer>
-                        <Button variant="outlined" color="primary">
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={this.handleTravelClicked}
+                        >
                             Travel
                         </Button>
                         <Button variant="contained" color="primary">

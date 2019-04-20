@@ -8,15 +8,19 @@ class PlayerStore {
         engineerPoints: 0,
         pilotPoints: 0,
         traderPoints: 0,
-        planetIndex: 0
+        planetIndex: 0,
+        credits: 1000,
+        fuel: 500,
+        fuelCapacity: 500,
+        cargoHold: []
     };
 
-    @action
+    @action.bound
     setName(name) {
         this.state.name = name;
     }
 
-    @action
+    @action.bound
     setPoints(fighterPoints, engineerPoints, pilotPoints, traderPoints) {
         this.state.fighterPoints = fighterPoints;
         this.state.engineerPoints = engineerPoints;
