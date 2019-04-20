@@ -10,6 +10,7 @@ import {
     Snackbar,
     SnackbarContent
 } from "@material-ui/core";
+import Player from "../../store/Player";
 import styled from "styled-components";
 
 const Layout = styled(Paper)`
@@ -70,7 +71,9 @@ class ConfigPage extends React.Component {
                 open: true
             });
         } else {
-            this.props.history.push("/game");
+            Player.setName(name);
+            Player.setPoints(fPoints, ePoints, pPoints, tPoints);
+            this.props.history.push("/planet");
         }
     };
 
