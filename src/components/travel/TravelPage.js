@@ -8,11 +8,16 @@ import {
     Card,
     CardContent,
     LinearProgress,
-    Button
+    Button,
+    Dialog,
+    DialogContentText,
+    DialogContent,
+    DialogActions,
+    DialogTitle
 } from "@material-ui/core";
 import styled from "styled-components";
 import { observer, inject } from "mobx-react";
-import { TECH_LEVELS } from "../../constants";
+import { TECH_LEVELS, PIRATE_CHANCE } from "../../constants";
 import Player, { PlayerTrunk } from "../../store/Player";
 import { toJS } from "mobx";
 
@@ -34,7 +39,14 @@ const distanceBetween = (x1, y1, x2, y2) => {
 class TravelPage extends React.Component {
     state = {
         selected: 0,
-        reachablePlanets: []
+        reachablePlanets: [],
+        dialogOpen: false
+    };
+
+    handleClose = () => {
+        this.setState({
+            dialogOpen: false
+        });
     };
 
     handleClick = () => {
@@ -56,7 +68,19 @@ class TravelPage extends React.Component {
         Player.state.fuel -= distance;
         Player.state.planetIndex = planetIdx;
         PlayerTrunk.persist();
-        this.props.history.push("/planet");
+        if (Math.random() < PIRATE_CHANCE) {
+            if (Player.state.credits > 50) {
+                Player.state.credits -= 50;
+            } else {
+                Player.state.credits = 0;
+            }
+            PlayerTrunk.persist();
+            this.setState({
+                dialogOpen: true
+            });
+        } else {
+            this.props.history.push("/planet");
+        }
     };
 
     handleBackClick = () => {
@@ -90,13 +114,32 @@ class TravelPage extends React.Component {
     }
 
     render() {
-        const { selected, reachablePlanets } = this.state;
+        const { selected, reachablePlanets, dialogOpen } = this.state;
         const { player } = this.props;
 
         const selectedPlanet = reachablePlanets[selected];
 
         return (
             <Layout>
+                <Dialog open={dialogOpen} handleClose={this.handleClose}>
+                    <DialogTitle id="alert-dialog-title">
+                        You were attacked by pirates!
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            You lost 50 credits
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button
+                            onClick={this.handleClose}
+                            color="primary"
+                            autoFocus
+                        >
+                            Close
+                        </Button>
+                    </DialogActions>
+                </Dialog>
                 <Typography variant="h4">Choose Destination</Typography>
                 <FormControl>
                     <Select

@@ -1,3 +1,4 @@
+export const PIRATE_CHANCE = 0.2;
 export const RESOURCES = [
     "NO_SPECIAL_RESOURCES",
     "MINERAL_RICH",
