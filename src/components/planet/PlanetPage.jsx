@@ -1,5 +1,4 @@
 import React from "react";
-import Universe from "../../store/Universe";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Paper, Typography, Button } from "@material-ui/core";
 import { observer, inject } from "mobx-react";
@@ -22,10 +21,6 @@ const ButtonContainer = styled.div`
 @inject("planets", "player")
 @observer
 class PlanetPage extends React.Component {
-    componentDidMount() {
-        Universe.initialize();
-    }
-
     handleTravelClicked = () => {
         this.props.history.push("/travel");
     };
@@ -40,45 +35,42 @@ class PlanetPage extends React.Component {
 
     render() {
         const planet = this.props.planets.toJS()[this.props.player.planetIndex];
-        if (planet) {
-            return (
-                <Container>
-                    <Typography variant="h3" gutterBottom>
-                        {planet.name}
-                    </Typography>
-                    <Typography>
-                        {planet.name} has the following resource:{" "}
-                        {planet.resources} <br />
-                        It is at the {planet.techLevel} age with technology
-                        level of {TECH_LEVELS.indexOf(planet.techLevel)}
-                    </Typography>
-                    <ButtonContainer>
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            onClick={this.handleTravelClicked}
-                        >
-                            Travel
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={this.handleBuyClicked}
-                        >
-                            Buy
-                        </Button>
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={this.handleSellClicked}
-                        >
-                            Sell
-                        </Button>
-                    </ButtonContainer>
-                </Container>
-            );
-        }
-        return <CircularProgress />;
+        return (
+            <Container>
+                <Typography variant="h3" gutterBottom>
+                    {planet.name}
+                </Typography>
+                <Typography>
+                    {planet.name} has the following resource: {planet.resources}{" "}
+                    <br />
+                    It is at the {planet.techLevel} age with technology level of{" "}
+                    {TECH_LEVELS.indexOf(planet.techLevel)}
+                </Typography>
+                <ButtonContainer>
+                    <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={this.handleTravelClicked}
+                    >
+                        Travel
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={this.handleBuyClicked}
+                    >
+                        Buy
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={this.handleSellClicked}
+                    >
+                        Sell
+                    </Button>
+                </ButtonContainer>
+            </Container>
+        );
     }
 }
 

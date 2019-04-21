@@ -1,8 +1,8 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 import { toJS } from "mobx";
-import Player from "../../store/Player";
-import Universe from "../../store/Universe";
+import Player, { PlayerTrunk } from "../../store/Player";
+import Universe, { UniverseTrunk } from "../../store/Universe";
 import {
     Table,
     TableHead,
@@ -23,7 +23,8 @@ class Buy extends React.Component {
         if (
             tradeGood &&
             tradeGood.quantity > 0 &&
-            player.credits >= tradeGood.price
+            player.credits >= tradeGood.price &&
+            Player.cargoSpace < player.cargoCapacity
         ) {
             Universe.planets[player.planetIndex].tradeGoods[name].quantity -= 1;
             Player.state.credits -= tradeGood.price;
@@ -35,6 +36,8 @@ class Buy extends React.Component {
                     quantity: 1
                 };
             }
+            PlayerTrunk.persist();
+            UniverseTrunk.persist();
         }
     };
 
@@ -42,7 +45,6 @@ class Buy extends React.Component {
         const { planets, player } = this.props;
         const jsPlanets = toJS(planets);
         const currPlanet = jsPlanets[player.planetIndex];
-        console.log(currPlanet);
 
         return (
             <Table>

@@ -10,7 +10,8 @@ import {
     Snackbar,
     SnackbarContent
 } from "@material-ui/core";
-import Player from "../../store/Player";
+import Player, { PlayerTrunk } from "../../store/Player";
+import Universe, { UniverseTrunk } from "../../store/Universe";
 import styled from "styled-components";
 
 const Layout = styled(Paper)`
@@ -73,6 +74,9 @@ class ConfigPage extends React.Component {
         } else {
             Player.setName(name);
             Player.setPoints(fPoints, ePoints, pPoints, tPoints);
+            PlayerTrunk.persist();
+            Universe.initialize();
+            UniverseTrunk.persist();
             this.props.history.push("/planet");
         }
     };

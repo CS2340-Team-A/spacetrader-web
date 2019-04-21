@@ -13,7 +13,7 @@ import {
 import styled from "styled-components";
 import { observer, inject } from "mobx-react";
 import { TECH_LEVELS } from "../../constants";
-import Player from "../../store/Player";
+import Player, { PlayerTrunk } from "../../store/Player";
 import { toJS } from "mobx";
 
 const Layout = styled(Paper)`
@@ -55,6 +55,7 @@ class TravelPage extends React.Component {
         );
         Player.state.fuel -= distance;
         Player.state.planetIndex = planetIdx;
+        PlayerTrunk.persist();
         this.props.history.push("/planet");
     };
 

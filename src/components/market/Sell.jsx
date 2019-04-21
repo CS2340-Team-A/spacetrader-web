@@ -1,8 +1,8 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 import { toJS } from "mobx";
-import Player from "../../store/Player";
-import Universe from "../../store/Universe";
+import Player, { PlayerTrunk } from "../../store/Player";
+import Universe, { UniverseTrunk } from "../../store/Universe";
 import {
     Table,
     TableHead,
@@ -23,6 +23,8 @@ class Sell extends React.Component {
             Universe.planets[player.planetIndex].tradeGoods[name].quantity += 1;
             Player.state.credits += price;
             Player.state.cargoHold[name].quantity -= 1;
+            PlayerTrunk.persist();
+            UniverseTrunk.persist();
         }
     };
 

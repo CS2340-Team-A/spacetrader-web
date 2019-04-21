@@ -1,4 +1,5 @@
 import { observable, action, computed } from "mobx";
+import { SyncTrunk } from "mobx-sync";
 
 class PlayerStore {
     @observable
@@ -15,6 +16,21 @@ class PlayerStore {
         cargoHold: {},
         cargoCapacity: 20
     };
+
+    @action.bound
+    reset() {
+        this.state.name = "";
+        this.state.fighterPoints = 0;
+        this.state.engineerPoints = 0;
+        this.state.pilotPoints = 0;
+        this.state.traderPoints = 0;
+        this.state.planetIndex = 0;
+        this.state.credits = 1000;
+        this.state.fuel = 500;
+        this.state.fuelCapacity = 500;
+        this.state.cargoHold = {};
+        this.state.cargoCapacity = 20;
+    }
 
     @action.bound
     setName(name) {
@@ -39,4 +55,9 @@ class PlayerStore {
 }
 
 const singleton = new PlayerStore();
+export const PlayerTrunk = new SyncTrunk(singleton, {
+    storage: localStorage,
+    storageKey: "player_trunk"
+});
+PlayerTrunk.init();
 export default singleton;

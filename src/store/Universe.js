@@ -5,6 +5,7 @@ import {
     RESOURCES,
     TRADE_GOODS
 } from "../constants";
+import { SyncTrunk } from "mobx-sync";
 
 const X_BOUND = 500;
 const Y_BOUND = 500;
@@ -85,7 +86,17 @@ class Universe {
             });
         }
     }
+
+    @action
+    reset() {
+        this.planets = [];
+    }
 }
 
 const singleton = new Universe();
+export const UniverseTrunk = new SyncTrunk(singleton, {
+    storage: localStorage,
+    storageKey: "universe_trunk"
+});
+UniverseTrunk.init();
 export default singleton;
