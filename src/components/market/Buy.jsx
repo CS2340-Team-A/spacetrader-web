@@ -1,6 +1,8 @@
 import React from "react";
 import { observer, inject } from "mobx-react";
 import { toJS } from "mobx";
+import Player from "../../store/Player";
+import Universe from "../../store/Universe";
 import {
     Table,
     TableHead,
@@ -13,7 +15,28 @@ import {
 @inject("planets", "player")
 @observer
 class Buy extends React.Component {
-    componentDidMount() {}
+    handleBuyClicked = name => () => {
+        const { planets, player } = this.props;
+        const jsPlanets = toJS(planets);
+        const currPlanet = jsPlanets[player.planetIndex];
+        const tradeGood = currPlanet.tradeGoods[name];
+        if (
+            tradeGood &&
+            tradeGood.quantity > 0 &&
+            player.credits >= tradeGood.price
+        ) {
+            Universe.planets[player.planetIndex].tradeGoods[name].quantity -= 1;
+            Player.state.credits -= tradeGood.price;
+            if (!!Player.state.cargoHold[name]) {
+                Player.state.cargoHold[name].quantity += 1;
+            } else {
+                Player.state.cargoHold[name] = {
+                    name: name,
+                    quantity: 1
+                };
+            }
+        }
+    };
 
     render() {
         const { planets, player } = this.props;
@@ -32,13 +55,17 @@ class Buy extends React.Component {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {currPlanet.tradeGoods.map((good, idx) => (
+                    {Object.values(currPlanet.tradeGoods).map((good, idx) => (
                         <TableRow key={good.name + idx}>
                             <TableCell>{good.name}</TableCell>
                             <TableCell>{good.quantity}</TableCell>
                             <TableCell>{good.price}</TableCell>
                             <TableCell>
-                                <Button>Buy</Button>
+                                <Button
+                                    onClick={this.handleBuyClicked(good.name)}
+                                >
+                                    Buy
+                                </Button>
                             </TableCell>
                         </TableRow>
                     ))}

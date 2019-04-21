@@ -12,7 +12,7 @@ class PlayerStore {
         credits: 1000,
         fuel: 500,
         fuelCapacity: 500,
-        cargoHold: [],
+        cargoHold: {},
         cargoCapacity: 20
     };
 
@@ -31,9 +31,9 @@ class PlayerStore {
 
     @computed get cargoSpace() {
         let space = 0;
-        for (let cargo of this.state.cargoHold) {
+        Object.values(this.state.cargoHold).forEach(cargo => {
             space += cargo.quantity;
-        }
+        });
         return space;
     }
 }

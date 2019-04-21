@@ -32,7 +32,7 @@ class Universe {
             const techLevelIdx = Math.floor(Math.random() * TECH_LEVELS.length);
             const techLevel = TECH_LEVELS[techLevelIdx];
 
-            const tradeGoods = [];
+            const tradeGoods = {};
             for (let goodKey in TRADE_GOODS) {
                 const good = TRADE_GOODS[goodKey];
                 if (good.MLTP <= techLevelIdx || good.MLTU <= techLevelIdx) {
@@ -67,11 +67,11 @@ class Universe {
                     } else if (resources === good.ER) {
                         quantity = Math.floor(quantity / 4);
                     }
-                    tradeGoods.push({
+                    tradeGoods[goodKey] = {
                         name: goodKey,
                         quantity,
                         price
-                    });
+                    };
                 }
             }
 
