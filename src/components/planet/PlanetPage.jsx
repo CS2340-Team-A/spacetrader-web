@@ -1,7 +1,7 @@
 import React from "react";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { Paper, Typography, Button } from "@material-ui/core";
 import { observer, inject } from "mobx-react";
+import { toJS } from "mobx";
 import { TECH_LEVELS } from "../../constants";
 import styled from "styled-components";
 
@@ -34,7 +34,8 @@ class PlanetPage extends React.Component {
     };
 
     render() {
-        const planet = this.props.planets.toJS()[this.props.player.planetIndex];
+        console.log(this.props.planets[0].name);
+        const planet = toJS(this.props.planets[this.props.player.planetIndex]);
         return (
             <Container>
                 <Typography variant="h3" gutterBottom>

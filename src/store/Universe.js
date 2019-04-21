@@ -87,9 +87,9 @@ class Universe {
         }
     }
 
-    @action
+    @action.bound
     reset() {
-        this.planets = [];
+        this.planets.splice(0, this.planets.length);
     }
 }
 

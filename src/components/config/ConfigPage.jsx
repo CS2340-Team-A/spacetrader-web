@@ -74,8 +74,8 @@ class ConfigPage extends React.Component {
         } else {
             Player.setName(name);
             Player.setPoints(fPoints, ePoints, pPoints, tPoints);
-            PlayerTrunk.persist();
             Universe.initialize();
+            PlayerTrunk.persist();
             UniverseTrunk.persist();
             this.props.history.push("/planet");
         }
